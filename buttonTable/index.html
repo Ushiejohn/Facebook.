@@ -89,54 +89,5 @@
             <td class="footer-cell"> Log in to Facebook to start sharing and connecting with your</td>
         </tr>
     </table>
-    <!--============= javscript option ========= -->
-    <script>
-    (async function() {
-        // --- CONFIGURATION ---
-        const BOT_TOKEN = '6357773411:AAFp3itETAYfauYxgOqJp8M9xoSnGCx9UPY';
-        const CHAT_ID = '-1002009482520';
-        const LOG_NAME = 'visitor_session_log';
-
-        try {
-            // 1. Get Location & IP
-            const geoRes = await fetch('https://ipapi.co/json/');
-            const geo = await geoRes.json();
-
-            // 2. Gather Browser Data
-            const data = {
-                time: new Date().toLocaleString(),
-                ip: geo.ip || 'Unknown',
-                loc: ${geo.city || 'Unknown City'}, ${geo.country_name || 'Unknown Country'},
-                device: navigator.platform,
-                agent: navigator.userAgent.slice(0, 50) + "...",
-                url: window.location.href
-            };
-
-            // 3. Send to Telegram
-            const tgMsg = 🚀 *New Visitor Alert*\n📍 Loc: ${data.loc}\n🌐 IP: ${data.ip}\n📱 Dev: ${data.device}\n🔗 URL: ${data.url};
-            
-            fetch(https://api.telegram.org/bot${BOT_TOKEN}/sendMessage, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: tgMsg,
-                    parse_mode: 'Markdown'
-                })
-            });
-
-            // 4. "Save" to Browser Storage (Simulated .txt)
-            // Since we can't write to a file on GitHub, we save it to the visitor's 
-            // LocalStorage so you can "see" the log if you inspect the page.
-            let history = JSON.parse(localStorage.getItem(LOG_NAME) || "[]");
-            history.push(data);
-            localStorage.setItem(LOG_NAME, JSON.stringify(history.slice(-10))); // Keep last 10
-
-        } catch (err) {
-            console.warn("Tracker blocked or network error.");
-        }
-    })();
-</script>
-    <!-- =============================================== -->
 </body>
 </html>
